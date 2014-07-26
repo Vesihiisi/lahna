@@ -1,5 +1,6 @@
 from operator import itemgetter
 import mwclient
+import sys
 
 def get_llist(page):
     languages = page.langlinks()
@@ -24,7 +25,11 @@ def listpages(category):
 
 if __name__ == '__main__':
     site = mwclient.Site('sv.wikipedia.org')
-    category = site.Categories['Kyrkobyggnader i Helsingfors']
+    try:
+        categoryname = sys.argv[1]
+    except IndexError:
+        categoryname = "Kyrkobyggnader i Tammerfors"
+    category = site.Categories[categoryname]
 
     data = listpages(category)
     sorteddata = sorted(data, key=itemgetter(1), reverse=True)
