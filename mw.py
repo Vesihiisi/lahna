@@ -7,7 +7,7 @@ def get_llist(page):
     return langlist
 
 def listpages(category):
-    text = []
+    mylist = []
     for page in category:
         if page.namespace != 14:
             langlist=get_llist(page)
@@ -16,22 +16,17 @@ def listpages(category):
                 print page.name, "exists on English Wikipedia."
             else:
                 print page.name, "does not exist on English Wikipedia."
-                text.append(page.name)
+                mytuple = (page.name, len(langlist))
+                mylist.append(mytuple)
         else:
              pass
-    return text
+    return mylist
 
 if __name__ == '__main__':
     site = mwclient.Site('sv.wikipedia.org')
     category = site.Categories['Kyrkobyggnader i Helsingfors']
 
     data = listpages(category)
-    langdict = {}
-    for x in data:
-        page = site.Pages[x]
-        langlist = get_llist(page)
-        langdict[x] = len(langlist)
-
-    sorteddict = sorted(langdict.items(), key=itemgetter(1), reverse=True)
-    for x in sorteddict:
+    sorteddata = sorted(data, key=itemgetter(1), reverse=True)
+    for x in sorteddata:
         print x
