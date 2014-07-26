@@ -1,6 +1,7 @@
 from operator import itemgetter
 import mwclient
 import sys
+import codecs
 
 def get_llist(page):
     languages = page.langlinks()
@@ -33,7 +34,13 @@ def wikiformat(data):
         y = "* [[:" + languagecode + ":"+ x[0] + "|" + x[0] + "]], " + str(x[1])
         wikioutput.append(y)
     return wikioutput
-        
+
+def saveoutput(data):
+    outputfile = codecs.open("output.txt", "w", "utf8")
+    for x in output:
+        outputfile.write(x + "\n")
+    outputfile.close()
+    return outputfile
 
 if __name__ == '__main__':
     site = mwclient.Site(languagecode + '.wikipedia.org')
@@ -51,3 +58,4 @@ if __name__ == '__main__':
     output = wikiformat(sorteddata)
     for x in output:
         print x
+    myfile = saveoutput(output)
