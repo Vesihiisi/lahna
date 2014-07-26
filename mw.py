@@ -7,7 +7,10 @@ def get_llist(page):
     langlist = list(languages)
     return langlist
 
-def listpages(category, limit=0): #0 means only current cat, set to 1 for one subcategory etc
+def listpages(category, limit=1):
+    """
+    0 means only current cat, set to 1 for one subcategory etc
+    """
     mylist = []
     for page in category:
         if page.namespace != 14:
@@ -24,8 +27,17 @@ def listpages(category, limit=0): #0 means only current cat, set to 1 for one su
                 mylist += listpages(page, limit-1)
     return mylist
 
+def wikiformat(data):
+    wikioutput = []
+    for x in data:
+        y = "* [[:" + languagecode + ":"+ x[0] + "|" + x [0] + "]]"
+        wikioutput.append(y)
+    return wikioutput
+        
+
 if __name__ == '__main__':
-    site = mwclient.Site('sv.wikipedia.org')
+    site = mwclient.Site(languagecode + '.wikipedia.org')
+    languagecode = "sv"
     try:
         categoryname = sys.argv[1].decode("utf8")
     except IndexError:
