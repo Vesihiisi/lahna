@@ -7,7 +7,7 @@ def get_llist(page):
     langlist = list(languages)
     return langlist
 
-def listpages(category):
+def listpages(category, limit=0): #0 means only current cat, set to 1 for one subcategory etc
     mylist = []
     for page in category:
         if page.namespace != 14:
@@ -20,7 +20,8 @@ def listpages(category):
                 mytuple = (page.name, len(langlist))
                 mylist.append(mytuple)
         else:
-             pass
+            if limit > 0:
+                mylist += listpages(page, limit-1)
     return mylist
 
 if __name__ == '__main__':
@@ -28,7 +29,7 @@ if __name__ == '__main__':
     try:
         categoryname = sys.argv[1].decode("utf8")
     except IndexError:
-        categoryname = "Kyrkobyggnader i Tammerfors"
+        categoryname = "Byggnader i Tammerfors"
     category = site.Categories[categoryname]
 
     data = listpages(category)
