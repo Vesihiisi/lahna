@@ -42,8 +42,8 @@ def saveoutput(data):
     return outputfile
 
 if __name__ == '__main__':
-    site = mwclient.Site(languagecode + '.wikipedia.org')
     languagecode = "sv"
+    site = mwclient.Site(languagecode + '.wikipedia.org')
     try:
         categoryname = sys.argv[1].decode("utf8")
     except IndexError:
