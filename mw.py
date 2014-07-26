@@ -36,10 +36,9 @@ def wikiformat(data):
     return wikioutput
 
 def saveoutput(data):
-    outputfile = codecs.open("output.txt", "w", "utf8")
-    for x in output:
-        outputfile.write(x + "\n")
-    outputfile.close()
+    with codecs.open("output.txt", "w", "utf8") as outputfile:
+        for x in output:
+            outputfile.write(x + "\n")
     return outputfile
 
 if __name__ == '__main__':
