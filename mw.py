@@ -7,7 +7,7 @@ def get_llist(page):
     langlist = list(languages)
     return langlist
 
-def listpages(category, limit=1):
+def listpages(category, limit=0):
     """
     0 means only current cat, set to 1 for one subcategory etc
     """
@@ -30,7 +30,7 @@ def listpages(category, limit=1):
 def wikiformat(data):
     wikioutput = []
     for x in data:
-        y = "* [[:" + languagecode + ":"+ x[0] + "|" + x [0] + "]]"
+        y = "* [[:" + languagecode + ":"+ x[0] + "|" + x[0] + "]], " + str(x[1])
         wikioutput.append(y)
     return wikioutput
         
@@ -47,4 +47,7 @@ if __name__ == '__main__':
     data = listpages(category)
     sorteddata = sorted(data, key=itemgetter(1), reverse=True)
     for x in sorteddata:
+        print x
+    output = wikiformat(sorteddata)
+    for x in output:
         print x
