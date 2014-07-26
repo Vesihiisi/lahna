@@ -1,8 +1,6 @@
 from operator import itemgetter
 import mwclient
-site = mwclient.Site('sv.wikipedia.org')
 
-category = site.Categories['Kyrkobyggnader i Helsingfors']
 def get_llist(page):
     languages = page.langlinks()
     langlist = list(languages)
@@ -23,13 +21,17 @@ def listpages(category):
              pass
     return text
 
-data = listpages(category)
-langdict = {}
-for x in data:
-    page = site.Pages[x]
-    langlist = get_llist(page)
-    langdict[x] = len(langlist)
+if __name__ == '__main__':
+    site = mwclient.Site('sv.wikipedia.org')
+    category = site.Categories['Kyrkobyggnader i Helsingfors']
 
-sorteddict = sorted(langdict.items(), key=itemgetter(1), reverse=True)
-for x in sorteddict:
-    print x
+    data = listpages(category)
+    langdict = {}
+    for x in data:
+        page = site.Pages[x]
+        langlist = get_llist(page)
+        langdict[x] = len(langlist)
+
+    sorteddict = sorted(langdict.items(), key=itemgetter(1), reverse=True)
+    for x in sorteddict:
+        print x
