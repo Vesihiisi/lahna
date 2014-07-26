@@ -26,7 +26,7 @@ def listpages(category):
 if __name__ == '__main__':
     site = mwclient.Site('sv.wikipedia.org')
     try:
-        categoryname = sys.argv[1]
+        categoryname = sys.argv[1].decode("utf8")
     except IndexError:
         categoryname = "Kyrkobyggnader i Tammerfors"
     category = site.Categories[categoryname]
