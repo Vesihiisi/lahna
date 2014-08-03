@@ -33,8 +33,7 @@ def listcatscan(f):
     """
     Work on csv file from http://tools.wmflabs.org/catscan2/catscan2.php.
     """
-    f = open("catscan", 'rt')
-    try:
+    with codecs.open("catscan", "rt", "utf8") as f:
         reader = csv.reader(f)
         listoftitles = []
         next(reader, None)
@@ -42,8 +41,6 @@ def listcatscan(f):
         for row in reader:
             print row[0]
             listoftitles.append(row[0])
-    finally:
-        f.close()
     return listoftitles
 
 def wikiformat(data):
