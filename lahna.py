@@ -71,13 +71,15 @@ def saveoutput(data):
     return outputfile
 
 if __name__ == '__main__':
-    languagecode = "sv"
-    targetlanguage = "en"
-    site = mwclient.Site(languagecode + '.wikipedia.org')
     try:
         categoryname = sys.argv[1].decode("utf8")
+        languagecode = sys.argv[2]
+        targetlanguage = sys.argv[3]
     except IndexError:
         categoryname = "Byggnader i Tammerfors"
+        languagecode = "sv"
+        targetlanguage = "en"
+    site = mwclient.Site(languagecode + '.wikipedia.org')
     category = site.Categories[categoryname]
 
     data = newlistpages(category, 0)
