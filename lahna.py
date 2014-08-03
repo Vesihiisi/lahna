@@ -66,7 +66,7 @@ def wikiformat(data):
 
 def saveoutput(data):
     with codecs.open("output.txt", "w", "utf8") as outputfile:
-        for x in output:
+        for x in data:
             outputfile.write(x + "\n")
     return outputfile
 
