@@ -1,8 +1,9 @@
-from operator import itemgetter
-import mwclient
-import sys
-import codecs
+import argparse
 import csv
+import codecs
+import mwclient
+from operator import itemgetter
+import sys
 
 
 def get_iwlist(page):
@@ -66,9 +67,8 @@ def sort(data):
 def wikiformat(data):
     wikioutput = []
     for x in data:
-        y = "* [[:" + languagecode + ":" + x[0] + "|" + x[0] + "]], "
-        + str(x[1])
-        wikioutput.append(y)
+            y = "* [[:" + languagecode + ":" + x[0] + "|" + x[0] + "]], " + str(x[1])
+            wikioutput.append(y)
     return wikioutput
 
 
@@ -78,26 +78,28 @@ def saveoutput(data):
             outputfile.write(x + "\n")
     return outputfile
 
+def processall(data):
+    """
+    Takes a list of pages as input, processes it all the way to saving
+    wikiformatted output to file.
+    """
+    outputlist = iwprocess(data)
+    sorteddata = sort(outputlist)
+    formattedoutput = wikiformat(sorteddata)
+    myfile = saveoutput(formattedoutput)
+    return myfile
+
 
 if __name__ == '__main__':
-    try:
-        categoryname = sys.argv[1].decode("utf8")
-    except:
-        categoryname = "Byggnader i Tammerfors"
-    try:
-        languagecode = sys.argv[2]
-    except:
-        languagecode = "sv"
-    try:
-        targetlanguage = sys.argv[3]
-    except:
-        targetlanguage = "en"
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c", "--category", default='Tampereen kirkkorakennukset')
+    parser.add_argument("-s", "--sourcelanguage", default='fi')
+    parser.add_argument("-t", "--targetlanguage", default='sv')
+    args = parser.parse_args()
+    languagecode = args.sourcelanguage
+    categoryname = args.category.decode("utf8")
+    targetlanguage = args.targetlanguage
     site = mwclient.Site(languagecode + '.wikipedia.org')
     category = site.Categories[categoryname]
     data = newlistpages(category, 0)
-    outputlist = iwprocess(data)
-    sorteddata = sort(outputlist)
-    for x in sorteddata:
-        print x
-    formattedoutput = wikiformat(sorteddata)
-    myfile = saveoutput(formattedoutput)
+    myfile = processall(data)
