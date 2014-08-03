@@ -30,12 +30,15 @@ def listpages(category, limit=0):
     return mylist
 
 def listcatscan(f):
+    """
+    Work on csv file from http://tools.wmflabs.org/catscan2/catscan2.php.
+    """
     f = open("catscan", 'rt')
     try:
         reader = csv.reader(f)
         listoftitles = []
         next(reader, None)
-        next(reader, None)
+        next(reader, None) #wtf there must be a better way...
         for row in reader:
             print row[0]
             listoftitles.append(row[0])
