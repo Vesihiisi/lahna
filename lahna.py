@@ -9,7 +9,10 @@ def get_iwlist(page):
     langlist = list(languages)
     return langlist
 
-def newlistpages(category, limit=1):
+def newlistpages(category, limit=0):
+    """
+    0 means only current cat, set to 1 for one subcategory etc
+    """
     mylist = []
     for page in category:
         if page.namespace != 14:
@@ -33,30 +36,6 @@ def iwprocess(data):
             mytuple = (page.name, len(iwlist))
             outputlist.append(mytuple)
     return outputlist
-            
-    
-def listpages(category, limit=0):
-    """
-    0 means only current cat, set to 1 for one subcategory etc
-    ALSO THIS REALLY NEEDS TO BE SPLIT IN SEPARATE FUNCTIONS
-    FOR LISTING PAGES AND GETTING IW LINKS
-    THIS MAKES NO SENSE RIGHT NOW
-    """
-    mylist = []
-    for page in category:
-        if page.namespace != 14:
-            langlist=get_llist(page)
-            langs = set([item[0] for item in langlist])
-            if targetlanguage in langs:
-                print page.name, "exists on %s Wikipedia." % targetlanguage
-            else:
-                print page.name, "does not exist on %s Wikipedia." % targetlanguage
-                mytuple = (page.name, len(langlist))
-                mylist.append(mytuple)
-        else:
-            if limit > 0:
-                mylist += listpages(page, limit-1)
-    return mylist
 
 def listcatscan(f):
     """
