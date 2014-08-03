@@ -9,6 +9,17 @@ def get_llist(page):
     langlist = list(languages)
     return langlist
 
+def newlistpages(category, limit=1):
+    mylist = []
+    for page in category:
+        if page.namespace != 14:
+            print page.name
+            mylist.append(page.name)
+        else:
+            if limit > 0:
+                mylist += newlistpages(page, limit-1)
+    return mylist
+    
 def listpages(category, limit=0):
     """
     0 means only current cat, set to 1 for one subcategory etc
@@ -69,11 +80,13 @@ if __name__ == '__main__':
         categoryname = "Byggnader i Tammerfors"
     category = site.Categories[categoryname]
 
-    data = listpages(category)
-    sorteddata = sorted(data, key=itemgetter(1), reverse=True)
-    for x in sorteddata:
-        print x
-    output = wikiformat(sorteddata)
-    for x in output:
-        print x
-    myfile = saveoutput(output)
+    data = newlistpages(category)
+
+##    data = listpages(category)
+##    sorteddata = sorted(data, key=itemgetter(1), reverse=True)
+##    for x in sorteddata:
+##        print x
+##    output = wikiformat(sorteddata)
+##    for x in output:
+##        print x
+##    myfile = saveoutput(output)
