@@ -2,6 +2,7 @@ from operator import itemgetter
 import mwclient
 import sys
 import codecs
+import csv
 
 def get_llist(page):
     languages = page.langlinks()
@@ -27,6 +28,20 @@ def listpages(category, limit=0):
             if limit > 0:
                 mylist += listpages(page, limit-1)
     return mylist
+
+def listcatscan(f):
+    f = open("catscan", 'rt')
+    try:
+        reader = csv.reader(f)
+        listoftitles = []
+        next(reader, None)
+        next(reader, None)
+        for row in reader:
+            print row[0]
+            listoftitles.append(row[0])
+    finally:
+        f.close()
+    return listoftitles
 
 def wikiformat(data):
     wikioutput = []
