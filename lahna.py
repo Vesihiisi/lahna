@@ -12,6 +12,9 @@ def get_llist(page):
 def listpages(category, limit=0):
     """
     0 means only current cat, set to 1 for one subcategory etc
+    ALSO THIS REALLY NEEDS TO BE SPLIT IN SEPARATE FUNCTIONS
+    FOR LISTING PAGES AND GETTING IW LINKS
+    THIS MAKES NO SENSE RIGHT NOW
     """
     mylist = []
     for page in category:
