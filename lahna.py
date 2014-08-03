@@ -51,7 +51,6 @@ def listcatscan(f):
         next(reader, None)
         next(reader, None)  # wtf there must be a better way...
         for row in reader:
-            print row[0]
             listoftitles.append(row[0])
     return listoftitles
 
@@ -92,14 +91,19 @@ def processall(data):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    parser.add_argument("-f", "--file", default=None)
     parser.add_argument("-c", "--category", default='Tampereen kirkkorakennukset')
     parser.add_argument("-s", "--sourcelanguage", default='fi')
     parser.add_argument("-t", "--targetlanguage", default='sv')
     args = parser.parse_args()
+    filename = args.file
     languagecode = args.sourcelanguage
     categoryname = args.category.decode("utf8")
     targetlanguage = args.targetlanguage
     site = mwclient.Site(languagecode + '.wikipedia.org')
-    category = site.Categories[categoryname]
-    data = newlistpages(category, 0)
+    if args.file:
+        data = listcatscan(filename)
+    else:
+        category = site.Categories[categoryname]
+        data = newlistpages(category, 0)
     myfile = processall(data)
