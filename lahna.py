@@ -9,9 +9,9 @@ def get_iwlist(page):
     langlist = list(languages)
     return langlist
 
-def newlistpages(category, limit=0):
+def newlistpages(category, limit):
     """
-    0 means only current cat, set to 1 for one subcategory etc
+    limit = 0 means only current cat, set to 1 for one subcategory etc
     """
     mylist = []
     for page in category:
@@ -51,6 +51,13 @@ def listcatscan(f):
             listoftitles.append(row[0])
     return listoftitles
 
+def sort(data):
+    """
+    Sort by number of iwlinks in descending order.
+    """
+    sorteddata = sorted(data, key=itemgetter(1), reverse=True)
+    return sorteddata
+
 def wikiformat(data):
     wikioutput = []
     for x in data:
@@ -74,7 +81,11 @@ if __name__ == '__main__':
         categoryname = "Byggnader i Tammerfors"
     category = site.Categories[categoryname]
 
-    data = newlistpages(category)
+    data = newlistpages(category, 0)
+    outputlist = iwprocess(data)
+    sorteddata = sort(outputlist)
+    for x in sorteddata:
+        print x
 
 ##    data = listpages(category)
 ##    sorteddata = sorted(data, key=itemgetter(1), reverse=True)
