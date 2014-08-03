@@ -16,7 +16,6 @@ def newlistpages(category, limit):
     mylist = []
     for page in category:
         if page.namespace != 14:
-            print page.name
             mylist.append(page.name)
         else:
             if limit > 0:
@@ -86,12 +85,5 @@ if __name__ == '__main__':
     sorteddata = sort(outputlist)
     for x in sorteddata:
         print x
-
-##    data = listpages(category)
-##    sorteddata = sorted(data, key=itemgetter(1), reverse=True)
-##    for x in sorteddata:
-##        print x
-##    output = wikiformat(sorteddata)
-##    for x in output:
-##        print x
-##    myfile = saveoutput(output)
+    formattedoutput = wikiformat(sorteddata)
+    myfile = saveoutput(output)
