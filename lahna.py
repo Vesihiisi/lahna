@@ -21,10 +21,10 @@ def listpages(category, limit=0):
         if page.namespace != 14:
             langlist=get_llist(page)
             langs = set([item[0] for item in langlist])
-            if "en" in langs:
-                print page.name, "exists on English Wikipedia."
+            if targetlanguage in langs:
+                print page.name, "exists on %s Wikipedia." % targetlanguage
             else:
-                print page.name, "does not exist on English Wikipedia."
+                print page.name, "does not exist on %s Wikipedia." % targetlanguage
                 mytuple = (page.name, len(langlist))
                 mylist.append(mytuple)
         else:
@@ -61,6 +61,7 @@ def saveoutput(data):
 
 if __name__ == '__main__':
     languagecode = "sv"
+    targetlanguage = "en"
     site = mwclient.Site(languagecode + '.wikipedia.org')
     try:
         categoryname = sys.argv[1].decode("utf8")
