@@ -73,11 +73,15 @@ def saveoutput(data):
 if __name__ == '__main__':
     try:
         categoryname = sys.argv[1].decode("utf8")
-        languagecode = sys.argv[2]
-        targetlanguage = sys.argv[3]
-    except IndexError:
+    except:
         categoryname = "Byggnader i Tammerfors"
+    try:
+        languagecode = sys.argv[2]
+    except:
         languagecode = "sv"
+    try:
+        targetlanguage = sys.argv[3]
+    except:
         targetlanguage = "en"
     site = mwclient.Site(languagecode + '.wikipedia.org')
     category = site.Categories[categoryname]
