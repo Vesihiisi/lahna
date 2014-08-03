@@ -88,4 +88,4 @@ if __name__ == '__main__':
     for x in sorteddata:
         print x
     formattedoutput = wikiformat(sorteddata)
-    myfile = saveoutput(output)
+    myfile = saveoutput(formattedoutput)
