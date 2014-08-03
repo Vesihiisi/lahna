@@ -4,10 +4,12 @@ import sys
 import codecs
 import csv
 
+
 def get_iwlist(page):
     languages = page.langlinks()
     langlist = list(languages)
     return langlist
+
 
 def newlistpages(category, limit):
     """
@@ -21,6 +23,7 @@ def newlistpages(category, limit):
             if limit > 0:
                 mylist += newlistpages(page, limit-1)
     return mylist
+
 
 def iwprocess(data):
     outputlist = []
@@ -36,6 +39,7 @@ def iwprocess(data):
             outputlist.append(mytuple)
     return outputlist
 
+
 def listcatscan(f):
     """
     Work on csv file from http://tools.wmflabs.org/catscan2/catscan2.php.
@@ -44,11 +48,12 @@ def listcatscan(f):
         reader = csv.reader(f)
         listoftitles = []
         next(reader, None)
-        next(reader, None) #wtf there must be a better way...
+        next(reader, None)  # wtf there must be a better way...
         for row in reader:
             print row[0]
             listoftitles.append(row[0])
     return listoftitles
+
 
 def sort(data):
     """
@@ -57,18 +62,22 @@ def sort(data):
     sorteddata = sorted(data, key=itemgetter(1), reverse=True)
     return sorteddata
 
+
 def wikiformat(data):
     wikioutput = []
     for x in data:
-        y = "* [[:" + languagecode + ":"+ x[0] + "|" + x[0] + "]], " + str(x[1])
+        y = "* [[:" + languagecode + ":" + x[0] + "|" + x[0] + "]], "
+        + str(x[1])
         wikioutput.append(y)
     return wikioutput
+
 
 def saveoutput(data):
     with codecs.open("output.txt", "w", "utf8") as outputfile:
         for x in data:
             outputfile.write(x + "\n")
     return outputfile
+
 
 if __name__ == '__main__':
     try:
@@ -85,7 +94,6 @@ if __name__ == '__main__':
         targetlanguage = "en"
     site = mwclient.Site(languagecode + '.wikipedia.org')
     category = site.Categories[categoryname]
-
     data = newlistpages(category, 0)
     outputlist = iwprocess(data)
     sorteddata = sort(outputlist)
