@@ -4,7 +4,7 @@ import sys
 import codecs
 import csv
 
-def get_llist(page):
+def get_iwlist(page):
     languages = page.langlinks()
     langlist = list(languages)
     return langlist
@@ -19,6 +19,21 @@ def newlistpages(category, limit=1):
             if limit > 0:
                 mylist += newlistpages(page, limit-1)
     return mylist
+
+def iwprocess(data):
+    outputlist = []
+    for x in data:
+        page = site.Pages[x]
+        iwlist = get_iwlist(page)
+        iw = set([item[0] for item in iwlist])
+        if targetlanguage in iw:
+            print page.name, "exists on %s Wikipedia." % targetlanguage
+        else:
+            print page.name, "does not exist on %s Wikipedia." % targetlanguage
+            mytuple = (page.name, len(iwlist))
+            outputlist.append(mytuple)
+    return outputlist
+            
     
 def listpages(category, limit=0):
     """
