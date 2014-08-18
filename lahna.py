@@ -3,7 +3,6 @@ import csv
 import codecs
 import mwclient
 from operator import itemgetter
-import sys
 
 
 def get_iwlist(page):
@@ -22,7 +21,7 @@ def newlistpages(category, limit):
             mylist.append(page.name)
         else:
             if limit > 0:
-                mylist += newlistpages(page, limit-1)
+                mylist += newlistpages(page, limit - 1)
     return mylist
 
 
@@ -45,13 +44,13 @@ def listcatscan(f):
     """
     Work on csv file from http://tools.wmflabs.org/catscan2/catscan2.php.
     """
-    with codecs.open("catscan", "rt", "utf8") as f:
+    with open("catscan", "rt") as f:
         reader = csv.reader(f)
         listoftitles = []
         next(reader, None)
         next(reader, None)  # wtf there must be a better way...
         for row in reader:
-            listoftitles.append(row[0])
+            listoftitles.append(row[0].decode("utf-8"))
     return listoftitles
 
 
@@ -66,8 +65,9 @@ def sort(data):
 def wikiformat(data):
     wikioutput = []
     for x in data:
-            y = "* [[:" + languagecode + ":" + x[0] + "|" + x[0] + "]], " + str(x[1])
-            wikioutput.append(y)
+        y = "* [[:" + languagecode + ":" + x[0] + "|" + x[0] + "]], " + \
+            str(x[1])
+        wikioutput.append(y)
     return wikioutput
 
 
@@ -76,6 +76,7 @@ def saveoutput(data):
         for x in data:
             outputfile.write(x + "\n")
     return outputfile
+
 
 def processall(data):
     """
@@ -92,7 +93,8 @@ def processall(data):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", "--file", default=None)
-    parser.add_argument("-c", "--category", default='Tampereen kirkkorakennukset')
+    parser.add_argument(
+        "-c", "--category", default='Tampereen kirkkorakennukset')
     parser.add_argument("-s", "--sourcelanguage", default='fi')
     parser.add_argument("-t", "--targetlanguage", default='sv')
     args = parser.parse_args()
