@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import argparse
 import csv
 import codecs
@@ -15,10 +16,13 @@ def newlistpages(category, limit):
     """
     limit = 0 means only current cat, set to 1 for one subcategory etc
     """
+    print(category)
+    print(limit)
     mylist = []
     for page in category:
-        if page.namespace != 14:
-            mylist.append(page.name)
+        if page["ns"] != 14:
+            if page["ns"] == 0:
+                mylist.append(page["title"])
         else:
             if limit > 0:
                 mylist += newlistpages(page, limit - 1)
@@ -32,27 +36,12 @@ def iwprocess(data):
         iwlist = get_iwlist(page)
         iw = set([item[0] for item in iwlist])
         if targetlanguage in iw:
-            print page.name, "exists on %s Wikipedia." % targetlanguage
+            print(page.name, "exists on %s Wikipedia." % targetlanguage)
         else:
-            print page.name, "does not exist on %s Wikipedia." % targetlanguage
+            print(page.name, "does not exist on %s Wikipedia." % targetlanguage)
             mytuple = (page.name, len(iwlist))
             outputlist.append(mytuple)
     return outputlist
-
-
-def listcatscan(f):
-    """
-    Work on csv file from http://tools.wmflabs.org/catscan2/catscan2.php.
-    """
-    with open("catscan", "rt") as f:
-        reader = csv.reader(f)
-        listoftitles = []
-        next(reader, None)
-        next(reader, None)  # wtf there must be a better way...
-        for row in reader:
-            listoftitles.append(row[0].decode("utf-8"))
-    return listoftitles
-
 
 def sort(data):
     """
@@ -92,20 +81,16 @@ def processall(data):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("-f", "--file", default=None)
     parser.add_argument(
-        "-c", "--category", default='Tampereen kirkkorakennukset')
-    parser.add_argument("-s", "--sourcelanguage", default='fi')
-    parser.add_argument("-t", "--targetlanguage", default='sv')
+        "-c", "--category", required=True)
+    parser.add_argument("-s", "--sourcelanguage", default='en', required=True)
+    parser.add_argument("-t", "--targetlanguage", default='sv', required=True)
+    parser.add_argument("-d", "--depth", default='0', required=False)
     args = parser.parse_args()
-    filename = args.file
     languagecode = args.sourcelanguage
-    categoryname = args.category.decode("utf8")
+    categoryname = args.category
     targetlanguage = args.targetlanguage
-    site = mwclient.Site(languagecode + '.wikipedia.org')
-    if args.file:
-        data = listcatscan(filename)
-    else:
-        category = site.Categories[categoryname]
-        data = newlistpages(category, 0)
+    site = mwclient.Site(('https', languagecode + '.wikipedia.org'))
+    category = site.Categories[categoryname]
+    data = newlistpages(category, int(args.depth))
     myfile = processall(data)
