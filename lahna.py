@@ -47,6 +47,7 @@ def sort(data):
     """
     Sort by number of iwlinks in descending order.
     """
+    data = list(set(data))
     sorteddata = sorted(data, key=itemgetter(1), reverse=True)
     return sorteddata
 
