@@ -16,8 +16,6 @@ def newlistpages(category, limit):
     """
     limit = 0 means only current cat, set to 1 for one subcategory etc
     """
-    print(category)
-    print(limit)
     mylist = []
     for page in category:
         if page["ns"] != 14:
@@ -61,8 +59,8 @@ def wikiformat(data):
     return wikioutput
 
 
-def saveoutput(data):
-    with codecs.open("output.txt", "w", "utf8") as outputfile:
+def saveoutput(data, filename):
+    with codecs.open(filename, "w", "utf8") as outputfile:
         for x in data:
             outputfile.write(x + "\n")
     return outputfile
@@ -76,8 +74,11 @@ def processall(data):
     outputlist = iwprocess(data)
     sorteddata = sort(outputlist)
     formattedoutput = wikiformat(sorteddata)
-    myfile = saveoutput(formattedoutput)
+    myfile = saveoutput(formattedoutput, generateFileName(languagecode, targetlanguage, categoryname))
     return myfile
+
+def generateFileName(source, target, category):
+    return category + "_" + source + "_" + target + ".txt"
 
 
 if __name__ == '__main__':
