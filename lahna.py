@@ -18,15 +18,15 @@ def newlistpages(category, limit):
     """
     mylist = []
     for page in category:
-        if(type(page) is dict):
-            namespace = page['ns']
-            if namespace != 14:
-                if namespace == 0:
-                    mylist.append(page["title"])
-            else:
-                if limit > 0:
-                    cat = site.Categories[page["title"].split(":")[1]]
-                    mylist += newlistpages(cat, limit - 1)
+        namespace = page.namespace
+        print(page.name)
+        if namespace != 14:
+            if namespace == 0:
+                mylist.append(page.name)
+        else:
+            if limit > 0:
+                cat = site.Categories[page.name.split(":")[1]]
+                mylist += newlistpages(cat, limit - 1)
     return mylist
 
 
