@@ -111,8 +111,7 @@ if __name__ == '__main__':
                 print(item["title"])
                 titleList.append(item["title"])
         myfile = processall(titleList)
-        #data = listFromFile(filename)
     else:
         category = site.Categories[categoryname]
         data = newlistpages(category, int(args.depth))
-    #myfile = processall(data)
+        myfile = processall(data)
