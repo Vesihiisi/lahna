@@ -92,10 +92,15 @@ if __name__ == '__main__':
     parser.add_argument("-t", "--targetlanguage", default='sv', required=True)
     parser.add_argument("-d", "--depth", default='0', required=False)
     args = parser.parse_args()
+    parser.add_argument("-f", "--file", default=None)
+    filename = args.file
     languagecode = args.sourcelanguage
     categoryname = args.category
     targetlanguage = args.targetlanguage
     site = mwclient.Site(('https', languagecode + '.wikipedia.org'))
-    category = site.Categories[categoryname]
-    data = newlistpages(category, int(args.depth))
+    if args.file:
+        data = listFromFile(filename)
+    else:
+        category = site.Categories[categoryname]
+        data = newlistpages(category, int(args.depth))
     myfile = processall(data)
